@@ -1,10 +1,17 @@
 .profile__name-container {
-  display: flex;
-  align-items: center;
+  display: grid;
+  align-content: center;
+  grid-template-columns: fit-content(500px) 24px;
+  margin: 22px 0 0;
+  column-gap: 20px;
 }
 
 @media screen and (max-width:720px) {
   .profile__name-container {
+    grid-template-columns: 46.5px fit-content(200px) 46.5px;
+    grid-template-rows: min-content min-content;
     justify-content: center;
+    column-gap: 0;
+    margin: 0;
   }
 }

@@ -4,12 +4,12 @@
   background-position: center;
   background-repeat: no-repeat;
   background-color: transparent;
-  border: 2px solid white;
+  border: 1px solid white;
   width: 24px;
   height: 24px;
-  margin-left: 18px;
   transition: opacity .4s linear;
   padding: 0;
+  margin-top: 15px;
 }
 
 .profile__edit-button:hover {
@@ -22,5 +22,8 @@
     width: 18px;
     height: 18px;
     background-size: 7.5px 7.5px;
+    margin: 8px 0 0 10px;
+    grid-column: 3/4;
+    grid-row: 1/2;
   }
 }
