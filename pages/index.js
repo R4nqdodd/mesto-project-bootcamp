@@ -8,7 +8,6 @@ const changeProfileInfoForm = document.querySelector('.popup__change-profile-inf
 const nameInput = document.querySelector('.popup__input_name');
 const statusInput = document.querySelector('.popup__input_status');
 
-/*
 const initialCards = [
   {
     name: 'Архыз',
@@ -40,16 +39,20 @@ const elementTemplate = document.querySelector('#element').content;
 
 const elementsList = document.querySelector('.elements__list');
 
-const userElement = elementTemplate.querySelector('.element').cloneNode(true);
+const userElement = [];
 
-userElement.querySelector('.element__caption').textContent = initialCards[0].name;
-userElement.querySelector('.element__like');
-userElement.querySelector('.element__text');
-userElement.querySelector('.element__image').src = initialCards[0].link;
+initialCards.forEach(function(item, index) {
+  userElement[index] = elementTemplate.querySelector('.element').cloneNode(true);
 
-elementsList.append(userElement);
+  userElement[index].querySelector('.element__caption').textContent = item.name;
+  userElement[index].querySelector('.element__like');
+  userElement[index].querySelector('.element__text');
+  userElement[index].querySelector('.element__image').src = item.link;
+  userElement[index].querySelector('.element__image').alt = item.name;
+  
+  elementsList.append(userElement[index]);
+})
 
-*/
 
 function handleFormSubmit(evt) {
   evt.preventDefault();
