@@ -51,10 +51,14 @@ initialCards.forEach(function (item, index) {
   newElement[index] = elementTemplate.querySelector('.element').cloneNode(true);
 
   newElement[index].querySelector('.element__caption').textContent = item.name;
-  newElement[index].querySelector('.element__like');
   newElement[index].querySelector('.element__text');
   newElement[index].querySelector('.element__image').src = item.link;
   newElement[index].querySelector('.element__image').alt = item.name;
+  newElement[index].querySelector('.element__like').addEventListener('click', function (evt) {
+    evt.target.classList.toggle('element__like_active');
+  });
+
+
 
   elementsList.prepend(newElement[index]);
 })
@@ -103,7 +107,9 @@ function cardFormSubmit(evt) {
   newcard.querySelector('.element__text');
   newcard.querySelector('.element__image').src = cardLinkInput.value;
   newcard.querySelector('.element__image').alt = cardNameInput.value;
-
+  newcard.querySelector('.element__like').addEventListener('click', function (evt) {
+    evt.target.classList.toggle('element__like_active');
+  });
   elementsList.prepend(newcard);
 
   cardNameInput.value = '';
@@ -113,3 +119,4 @@ function cardFormSubmit(evt) {
 }
 
 addCardForm.addEventListener('submit', cardFormSubmit);
+
