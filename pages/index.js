@@ -39,7 +39,7 @@ const initialCards = [
     name: 'Байкал',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
   }
-]; 
+];
 
 const elementTemplate = document.querySelector('#element').content;
 
@@ -47,7 +47,7 @@ const elementsList = document.querySelector('.elements__list');
 
 const newElement = [];
 
-initialCards.forEach(function(item, index) {
+initialCards.forEach(function (item, index) {
   newElement[index] = elementTemplate.querySelector('.element').cloneNode(true);
 
   newElement[index].querySelector('.element__caption').textContent = item.name;
@@ -55,18 +55,17 @@ initialCards.forEach(function(item, index) {
   newElement[index].querySelector('.element__text');
   newElement[index].querySelector('.element__image').src = item.link;
   newElement[index].querySelector('.element__image').alt = item.name;
-  
-  elementsList.append(newElement[index]);
-})
 
+  elementsList.prepend(newElement[index]);
+})
 
 function handleFormSubmit(evt) {
   evt.preventDefault();
 
-  profileName.textContent = nameInput.value; 
+  profileName.textContent = nameInput.value;
   profileStatus.textContent = statusInput.value;
 
-  popup.classList.remove('popup_opened');
+  popupProfileEditing.classList.remove('popup_opened');
 }
 
 nameInput.value = profileName.textContent;
@@ -84,12 +83,33 @@ editCloseButton.addEventListener('click', function () {
 
 changeProfileInfoForm.addEventListener('submit', handleFormSubmit);
 
-addButton.addEventListener('click', function() {
+addButton.addEventListener('click', function () {
   popupAddCard.classList.add('popup_opened');
 })
 
-cardCloseButton.addEventListener('click', function() {
+cardCloseButton.addEventListener('click', function () {
   popupAddCard.classList.remove('popup_opened');
   cardNameInput.value = '';
   cardLinkInput.value = '';
 })
+
+function cardFormSubmit(evt) {
+  evt.preventDefault();
+
+  const newcard = elementTemplate.querySelector('.element').cloneNode(true);
+
+  newcard.querySelector('.element__caption').textContent = cardNameInput.value;
+  newcard.querySelector('.element__like');
+  newcard.querySelector('.element__text');
+  newcard.querySelector('.element__image').src = cardLinkInput.value;
+  newcard.querySelector('.element__image').alt = cardNameInput.value;
+
+  elementsList.prepend(newcard);
+
+  cardNameInput.value = '';
+  cardLinkInput.value = '';
+
+  popupAddCard.classList.remove('popup_opened');
+}
+
+addCardForm.addEventListener('submit', cardFormSubmit);
