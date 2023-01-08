@@ -57,6 +57,10 @@ initialCards.forEach(function (item, index) {
   newElement[index].querySelector('.element__like').addEventListener('click', function (evt) {
     evt.target.classList.toggle('element__like_active');
   });
+  newElement[index].querySelector('.element__trash').addEventListener('click', function (evt) {
+    const cardRemove = evt.target.closest('.element');
+    cardRemove.remove();
+  })
 
 
 
@@ -100,17 +104,21 @@ cardCloseButton.addEventListener('click', function () {
 function cardFormSubmit(evt) {
   evt.preventDefault();
 
-  const newcard = elementTemplate.querySelector('.element').cloneNode(true);
+  const newCard = elementTemplate.querySelector('.element').cloneNode(true);
 
-  newcard.querySelector('.element__caption').textContent = cardNameInput.value;
-  newcard.querySelector('.element__like');
-  newcard.querySelector('.element__text');
-  newcard.querySelector('.element__image').src = cardLinkInput.value;
-  newcard.querySelector('.element__image').alt = cardNameInput.value;
-  newcard.querySelector('.element__like').addEventListener('click', function (evt) {
+  newCard.querySelector('.element__caption').textContent = cardNameInput.value;
+  newCard.querySelector('.element__like');
+  newCard.querySelector('.element__text');
+  newCard.querySelector('.element__image').src = cardLinkInput.value;
+  newCard.querySelector('.element__image').alt = cardNameInput.value;
+  newCard.querySelector('.element__like').addEventListener('click', function (evt) {
     evt.target.classList.toggle('element__like_active');
   });
-  elementsList.prepend(newcard);
+  newCard.querySelector('.element__trash').addEventListener('click', function (evt) {
+    const cardRemove = evt.target.closest('.element');
+    cardRemove.remove();
+  })
+  elementsList.prepend(newCard);
 
   cardNameInput.value = '';
   cardLinkInput.value = '';
