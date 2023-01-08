@@ -4,3 +4,7 @@
   width: 100%;
   aspect-ratio: 1/1;
 }
+
+.element__image:hover {
+  cursor: pointer;
+}
