@@ -13,7 +13,7 @@
 @import url('../blocks/popup/__input/popup__input.css');
 @import url('../blocks/popup/__save-button/popup__save-button.css');
 @import url('../blocks/popup/__title/popup__title.css');
-@import url('../blocks/popup/__change-profile-info/popup__change-profile-info.css');
+@import url('../blocks/popup/__form/popup__form.css');
 @import url('../blocks/popup/__close-button/popup__close-button.css');
 @import url('../blocks/popup/_opened/popup_opened.css');
 

@@ -37,15 +37,27 @@
     <p class="footer__copyright">&copy; 2022 Mesto Russia</p>
   </footer>
 
-  <div class="popup">
+  <div class="popup popup_type_profile-editing">
     <div class="popup__container">
-      <h2 class="popup__title">Редактировать профиль</h2>
-      <form class="popup__change-profile-info" name="change-profile-info">
-        <input class="popup__input popup__input_name" type="text" name="name" value="Жак-Ив Кусто" id="popup-name">
-        <input class="popup__input popup__input_status" type="text" name="status" value="Исследователь океана" id="popup-status">
+      <form class="popup__form" name="change-profile-info">
+        <h2 class="popup__title">Редактировать профиль</h2>
+        <input class="popup__input" type="text" name="name" value="Жак-Ив Кусто" id="input-name">
+        <input class="popup__input" type="text" name="status" value="Исследователь океана" id="input-status">
         <button class="popup__save-button" type="submit">Сохранить</button>
+        <button class="popup__close-button" type="button" aria-label="Закрыть редактирование профиля"></button>
       </form>
-      <button class="popup__close-button" type="button" aria-label="Закрыть редактирование профиля"></button>
+    </div>
+  </div>
+
+  <div class="popup popup_type_add-card">
+    <div class="popup__container">
+      <form class="popup__form" name="add-card">
+        <h2 class="popup__title">Новое место</h2>
+        <input class="popup__input" type="text" name="card-name" placeholder="Название" id="input-card-name">
+        <input class="popup__input" type="text" name="card-link" placeholder="Ссылка на картинку" id="input-card-link">
+        <button class="popup__save-button" type="submit">Создать</button>
+        <button class="popup__close-button" type="button" aria-label="Закрыть редактирование профиля"></button>
+      </form>
     </div>
   </div>
 
