@@ -39,25 +39,25 @@
 
   <div class="popup popup_type_profile-editing">
     <div class="popup__container">
-      <form class="popup__form" name="change-profile-info">
+      <form class="popup__form" name="profile-info">
         <h2 class="popup__title">Редактировать профиль</h2>
-        <input class="popup__input" type="text" name="name" value="Жак-Ив Кусто" id="input-name">
-        <input class="popup__input" type="text" name="status" value="Исследователь океана" id="input-status">
+        <input class="popup__input" type="text" name="name" placeholder="Имя" id="input-name">
+        <input class="popup__input" type="text" name="status" placeholder="О себе" id="input-status">
         <button class="popup__save-button" type="submit">Сохранить</button>
-        <button class="popup__close-button" type="button" aria-label="Закрыть"></button>
       </form>
+      <button class="popup__close-button" type="button" aria-label="Закрыть"></button>
     </div>
   </div>
 
   <div class="popup popup_type_add-card">
     <div class="popup__container">
-      <form class="popup__form" name="add-card">
+      <form class="popup__form" name="add-card" disabled>
         <h2 class="popup__title">Новое место</h2>
         <input class="popup__input" type="text" name="card-name" placeholder="Название" id="input-card-name">
         <input class="popup__input" type="text" name="card-link" placeholder="Ссылка на картинку" id="input-card-link">
         <button class="popup__save-button" type="submit">Создать</button>
-        <button class="popup__close-button" type="button" aria-label="Закрыть"></button>
       </form>
+      <button class="popup__close-button" type="button" aria-label="Закрыть"></button>
     </div>
   </div>
 
