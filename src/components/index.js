@@ -1,3 +1,4 @@
+import './../pages/index.css';
 import { enableValidation, hideInputError } from "./validate.js";
 import { renderCard, initialCards, elementsContainer } from "./card.js";
 import { cardNameInput, cardLinkInput, nameInput, statusInput, openPopup, closePopup, pictureElement,
