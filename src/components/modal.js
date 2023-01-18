@@ -1,26 +1,25 @@
-export const profileName = document.querySelector('.profile__name');
-export const profileStatus = document.querySelector('.profile__status');
-
-export const popupProfileEditing = document.querySelector('.popup_type_profile-editing');
-export const ProfileInfoForm = document.forms.profileInfo;
-export const nameInput = ProfileInfoForm.elements.name;
-export const statusInput = ProfileInfoForm.elements.status;
-
-export const popupAddCard = document.querySelector('.popup_type_add-card');
-export const cardAddForm = document.forms.addCard;
-export const cardNameInput = cardAddForm.elements.cardName;
-export const cardLinkInput = cardAddForm.elements.cardLink;
-
-export const popupPicture = document.querySelector('.popup_type_picture');
-export const pictureElement = popupPicture.querySelector('.popup__picture');
-export const pictureCaption = popupPicture.querySelector('.popup__caption');
-
 export function closePopup(popup) {
   popup.classList.remove('popup_opened');
+  document.removeEventListener('keyup', closePopupESC);
 } 
 
 export function openPopup(popup) {
   popup.classList.add('popup_opened');
+  document.addEventListener('keyup', closePopupESC);
 }
 
+function closePopupESC (evt) {
+  if (evt.key === 'Escape') {
+    const popupOpened = document.querySelector('.popup_opened');
+    closePopup(popupOpened);
+  }
+}
 
+const popupList = Array.from(document.querySelectorAll('.popup'));
+popupList.forEach((popup) => {
+  popup.addEventListener('click', (evt) => {
+    if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close-button')) {
+      closePopup(popup);
+    }
+  });
+});
