@@ -1,50 +1,50 @@
 import { openPopup } from "./modal.js";
+import { myId, deleteCard, getLike, deleteLike } from "./api.js";
 
 const popupPicture = document.querySelector('.popup_type_picture');
 const pictureElement = popupPicture.querySelector('.popup__picture');
 const pictureCaption = popupPicture.querySelector('.popup__caption');
 
-export const elementsContainer = document.querySelector('.elements__container');
+const elementsContainer = document.querySelector('.elements__container');
 const elementTemplate = document.querySelector('#element').content;
 
-export const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
+const createNewCard = (card) => {
 
-function createNewCard(cardName, cardLink) {
-  
   const newCard = elementTemplate.querySelector('.element').cloneNode(true);
 
-  newCard.querySelector('.element__caption').textContent = cardName;
+  newCard.querySelector('.element__caption').textContent = card.name;
+
+  myId()
+    .then((obj) => {
+      if (card.owner._id === obj._id) {
+        addTrash(newCard);
+      }
+      card.likes.forEach(element => {
+        if (element._id === obj._id) {
+          newCard.querySelector('.element__like').classList.add('element__like_active');
+        }
+      });
+    })
+    .catch((err) => console.log(`Ошибка: ${err}`));
+
 
   newCard.addEventListener('click', (evt) => {
     if (evt.target.classList.contains('element__like')) {
+      if (evt.target.classList.contains('element__like_active')) {
+        deleteLike(card._id)
+          .then(res => {
+            likes.textContent = `${res.likes.length}`;
+          })
+      } else {
+        getLike(card._id)
+          .then(res => {
+            likes.textContent = `${res.likes.length}`;
+          })
+      }
       evt.target.classList.toggle('element__like_active');
     }
     if (evt.target.classList.contains('element__trash')) {
+      deleteCard(card._id);
       const cardRemove = evt.target.closest('.element');
       cardRemove.remove();
     }
@@ -56,13 +56,28 @@ function createNewCard(cardName, cardLink) {
     }
   });
 
-  const cardImage = newCard.querySelector('.element__image');
-  cardImage.src = cardLink;
-  cardImage.alt = cardName;
+  const likes = newCard.querySelector('.element__like-counter');
 
+  likes.textContent = `${card.likes.length}`;
+
+  const cardImage = newCard.querySelector('.element__image');
+  cardImage.src = card.link;
+  cardImage.alt = card.name;
   return newCard;
 }
 
-export function renderCard(cardName, cardLink) {
-  elementsContainer.prepend(createNewCard(cardName, cardLink));
+export const renderAddedCard = (card) => {
+  elementsContainer.prepend(createNewCard(card));
+}
+
+export const renderUploadedCard = (card) => {
+  elementsContainer.append(createNewCard(card));
+}
+
+const addTrash = (element) => {
+  const trash = document.createElement('button');
+  trash.setAttribute('type', 'button');
+  trash.setAttribute('aria-label', 'Удалить карточку');
+  trash.classList.add('element__trash');
+  element.prepend(trash);
 }
