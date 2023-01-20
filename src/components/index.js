@@ -9,9 +9,9 @@ const profileStatus = document.querySelector('.profile__status');
 const profileAvatar = document.querySelector('.profile__avatar');
 
 const popupProfileEditing = document.querySelector('.popup_type_profile-editing');
-const ProfileInfoForm = document.forms.profileInfo;
-const nameInput = ProfileInfoForm.elements.name;
-const statusInput = ProfileInfoForm.elements.status;
+const profileInfoForm = document.forms.profileInfo;
+const nameInput = profileInfoForm.elements.name;
+const statusInput = profileInfoForm.elements.status;
 
 const popupAddCard = document.querySelector('.popup_type_add-card');
 const cardAddForm = document.forms.addCard;
@@ -30,6 +30,8 @@ const profileEditingSubmitButton = popupProfileEditing.querySelector('.popup__sa
 const cardAddSubmitButton = popupAddCard.querySelector('.popup__save-button');
 const avatarSubmitButton = popupAvatarEditing.querySelector('.popup__save-button');
 
+export let profileId;
+
 const popupValidationSettings = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
@@ -39,16 +41,17 @@ const popupValidationSettings = {
   errorClass: 'popup__input-error_active'
 }
 
-profileInformation(profileName, profileStatus, profileAvatar)
-  .catch((err) => console.log(`Ошибка: ${err}`));
-
-uploadedCards()
-  .then((cards) => {
-    cards.forEach(element => {
+Promise.all([profileInformation(), uploadedCards()])
+  .then(result => {
+    profileName.textContent = result[0].name;
+    profileStatus.textContent = result[0].about;
+    profileAvatar.src = result[0].avatar;
+    profileId = result[0]._id;
+    result[1].forEach(element => {
       renderUploadedCard(element);
     });
   })
-  .catch((err) => console.log(`Ошибка: ${err}`));
+  .catch(err => console.log(`Ошибка: ${err}`));
 
 
 editButton.addEventListener('click', function () {
@@ -79,7 +82,7 @@ avatarButton.addEventListener('click', () => {
 })
 
 
-ProfileInfoForm.addEventListener('submit', handleFormSubmit);
+profileInfoForm.addEventListener('submit', handleFormSubmit);
 
 cardAddForm.addEventListener('submit', cardFormSubmit);
 
@@ -93,39 +96,41 @@ function cardFormSubmit(evt) {
   addNewCard(cardNameInput.value, cardLinkInput.value)
     .then(res => {
       renderAddedCard(res);
+      closePopup(popupAddCard);
     })
     .catch((err) => console.log(`Ошибка: ${err}`))
     .finally(() => renderLoading(false, cardAddSubmitButton, 'Создать'));
 
-  closePopup(popupAddCard);
 }
 
 function handleFormSubmit(evt) {
   evt.preventDefault();
 
   renderLoading(true, profileEditingSubmitButton, 'Сохранить');
-  profileName.textContent = nameInput.value;
-  profileStatus.textContent = statusInput.value;
 
   changeProfileInformation(nameInput.value, statusInput.value)
+    .then((res) => {      
+      profileName.textContent = res.name;
+      profileStatus.textContent = res.about;
+      closePopup(popupProfileEditing);
+    })
     .catch((err) => console.log(`Ошибка: ${err}`))
     .finally(() => renderLoading(false, profileEditingSubmitButton, 'Сохранить'));
 
-  closePopup(popupProfileEditing);
 }
 
 function avatarFormSubmit(evt) {
   evt.preventDefault();
 
   renderLoading(true, avatarSubmitButton, 'Сохранить');
-  profileAvatar.src = avatarLink.value;
 
   changeProfileAvatar(avatarLink.value)
+    .then((res) => {
+      profileAvatar.src = res.avatar;
+      closePopup(popupAvatarEditing);
+    })
     .catch((err) => console.log(`Ошибка: ${err}`))
     .finally(() => renderLoading(false, avatarSubmitButton, 'Сохранить'));
-
-  closePopup(popupAvatarEditing);
-
 }
 
 enableValidation(popupValidationSettings);

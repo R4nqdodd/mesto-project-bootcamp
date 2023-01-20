@@ -56,17 +56,10 @@ const toggleButtonState = (inputList, buttonElement, settings) => {
 }
 
 export const updateFormValidation = (popup, settings) => {
-  const inputList = Array.from(popup.querySelectorAll('.popup__input'));
+  const inputList = Array.from(popup.querySelectorAll(settings.inputSelector));
   inputList.forEach((inputElement) => {
     hideInputError(popup, inputElement, settings);
   })
-  const buttonElement = popup.querySelector('.popup__save-button');
-  const isValidInput = !hasInvalidInput(inputList);
-  if (isValidInput) {
-    buttonElement.removeAttribute('disabled');
-    buttonElement.classList.remove(settings.inactiveButtonClass);
-  } else {
-    buttonElement.setAttribute('disabled', true);
-    buttonElement.classList.add(settings.inactiveButtonClass);
-  }
+  const buttonElement = popup.querySelector(settings.submitButtonSelector);
+  toggleButtonState(inputList, buttonElement, settings);
 }

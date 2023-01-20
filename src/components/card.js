@@ -1,5 +1,6 @@
-import { openPopup } from "./modal.js";
-import { myId, deleteCard, getLike, deleteLike } from "./api.js";
+import { openPopup, closePopup } from "./modal.js";
+import { deleteCard, getLike, deleteLike } from "./api.js";
+import { profileId } from "./index.js";
 
 const popupPicture = document.querySelector('.popup_type_picture');
 const pictureElement = popupPicture.querySelector('.popup__picture');
@@ -14,46 +15,53 @@ const createNewCard = (card) => {
 
   newCard.querySelector('.element__caption').textContent = card.name;
 
-  myId()
-    .then((obj) => {
-      if (card.owner._id === obj._id) {
-        addTrash(newCard);
-      }
-      card.likes.forEach(element => {
-        if (element._id === obj._id) {
-          newCard.querySelector('.element__like').classList.add('element__like_active');
-        }
-      });
-    })
-    .catch((err) => console.log(`Ошибка: ${err}`));
+  const trash = newCard.querySelector('.element__trash');
 
+  trash.addEventListener('click', () => {  
+    deleteCard(card._id)
+        .then(() => {
+          const cardRemove = trash.closest('.element');
+          cardRemove.remove();
+        })
+        .catch(err => console.log(`Ошибка: ${err}`)); 
+  });
 
-  newCard.addEventListener('click', (evt) => {
-    if (evt.target.classList.contains('element__like')) {
-      if (evt.target.classList.contains('element__like_active')) {
-        deleteLike(card._id)
-          .then(res => {
-            likes.textContent = `${res.likes.length}`;
-          })
-      } else {
-        getLike(card._id)
-          .then(res => {
-            likes.textContent = `${res.likes.length}`;
-          })
-      }
-      evt.target.classList.toggle('element__like_active');
+  if (card.owner._id !== profileId) {
+    trash.remove();
+  }
+  card.likes.forEach(element => {
+    if (element._id === profileId) {
+      newCard.querySelector('.element__like').classList.add('element__like_active');
     }
-    if (evt.target.classList.contains('element__trash')) {
-      deleteCard(card._id);
-      const cardRemove = evt.target.closest('.element');
-      cardRemove.remove();
+  });
+
+  const like = newCard.querySelector('.element__like');
+
+  like.addEventListener('click', () => {
+    if (like.classList.contains('element__like_active')) {
+      deleteLike(card._id)
+        .then(res => {
+          likes.textContent = `${res.likes.length}`;
+          like.classList.remove('element__like_active');
+        })
+        .catch(err => console.log(`Ошибка: ${err}`));
+    } else {
+      getLike(card._id)
+        .then(res => {
+          likes.textContent = `${res.likes.length}`;
+          like.classList.add('element__like_active');
+        })
+        .catch(err => console.log(`Ошибка: ${err}`));
     }
-    if (evt.target.classList.contains('element__image')) {
-      openPopup(popupPicture);
-      pictureElement.src = evt.target.src;
-      pictureCaption.textContent = evt.target.alt;
-      pictureElement.alt = evt.target.alt;
-    }
+  });
+
+  const picture = newCard.querySelector('.element__image');
+
+  picture.addEventListener('click', () => {
+    openPopup(popupPicture);
+    pictureElement.src = picture.src;
+    pictureCaption.textContent = picture.alt;
+    pictureElement.alt = picture.alt;
   });
 
   const likes = newCard.querySelector('.element__like-counter');
@@ -74,10 +82,4 @@ export const renderUploadedCard = (card) => {
   elementsContainer.append(createNewCard(card));
 }
 
-const addTrash = (element) => {
-  const trash = document.createElement('button');
-  trash.setAttribute('type', 'button');
-  trash.setAttribute('aria-label', 'Удалить карточку');
-  trash.classList.add('element__trash');
-  element.prepend(trash);
-}
+
